@@ -1,5 +1,9 @@
+# IVRE Tests #
+
 This repository contains sample files and binaries used for
 [IVRE](https://ivre.rocks/) tests.
+
+## Samples ##
 
 They are not supposed to be somehow realistic but rather to help test
 most of IVRE features.
@@ -32,3 +36,23 @@ contributors, except:
 - The file `ipv6_all.xml` comes from the
   [logstash-codec-nmap](https://github.com/logstash-plugins/logstash-codec-nmap/)
   repository.
+
+## MongoDB backup ##
+
+The Elasticsearch backend can only be used for the `view` purpose. For
+that, it needs data from `nmap` and `passive` purposes to build the
+view. In Travis-CI, the Elasticsearch backend uses a MongoDB server to
+provide the `nmap` and `passive` purposes.
+
+The backend is located in
+`tests/mongodb_backup/backup_nmap_passive.tar.bz2` and can be build
+using the following commands:
+
+```sh
+DB=mongodb python tests.py 30_nmap 40_passive
+rm -rf ./backup/ && mkdir ./backup/
+mongodump --db=ivre --out=./backup/
+mv ./backup/ivre/*.bson ./backup/
+rm -rf ./backup/ivre ./backup/views.bson
+tar jcf ./backup_nmap_passive.tar.bz2 ./backup/*.bson
+```
