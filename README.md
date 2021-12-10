@@ -53,6 +53,5 @@ DB=mongodb python tests.py 30_nmap 40_passive
 rm -rf ./backup/ && mkdir ./backup/
 mongodump --db=ivre --out=./backup/
 mv ./backup/ivre/*.bson ./backup/
-rm -rf ./backup/ivre ./backup/views.bson
-tar jcf ./backup_nmap_passive.tar.bz2 ./backup/*.bson
+tar jcf ./backup_nmap_passive.tar.bz2 ./backup/{hosts,passive,scans}.bson
 ```
